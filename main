@@ -1,0 +1,29 @@
+def valid_fc_name(name):
+    
+    """ Returns a string with non-standard characters removed. """ 
+    
+    if ' ' in name or '-' in name:
+        name = name.replace('-','_')
+        name = name.replace(' ','_')
+        return name
+    else:
+        return name
+
+def add_color(text, color):
+    
+    """ Adds color to text, using the standard color name or assigned identification number. """
+    
+    import csv
+    
+    color_table_path = r'K:\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'
+    color_table_open = open(color_table_path, 'rb')
+    color_palette = csv.DictReader(color_table_open)
+    
+    for row in color_palette:
+        if color == row['color_name'] or color == int(row['color_code']):
+            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(row['red_value'], row['green_value'], row['blue_value']) + text + "</CLR>"
+            break
+        else:
+            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"
+
+    return label_colored
