@@ -9,9 +9,9 @@ def clean_name(name):
     else:
         return name
 
-def add_color(text, color):
+def ac(text, color):
     
-    """ Adds color to text, using the standard color name or assigned identification number. """
+    """ (a)dds (c)olor to text, using the standard color name or assigned identification number """
     
     import csv
     
@@ -27,8 +27,24 @@ def add_color(text, color):
             label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"
 
     return label_colored
+    
+def ab(text):
 
-def ha_fc_line(fc):
+    """ (a)dds (b)old to text """
+
+    label_bold = "<BOL>" + text + "</BOL>"
+
+    return label_bold
+    
+def ai(text):
+
+    """ (a)dds (i)talics to text """
+
+    label_italics = "<ITA>" + text + "</ITA>"
+
+    return label_italics
+
+def add_fields_line(fc):
 
     """ Add standard fields to a polyline feature class. """
 
@@ -47,7 +63,7 @@ def ha_fc_line(fc):
     arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
     arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
 
-def ha_fc_point(fc):
+def add_fields_point(fc):
 
     """ Add standard fields to a point feature class. """
 
@@ -67,7 +83,7 @@ def ha_fc_point(fc):
     arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
     arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
     
-def ha_fc_poly(fc):
+def add_fields_poly(fc):
 
     """ Add standard fields to a polygon feature class. """
 
