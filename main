@@ -10,15 +10,15 @@ def clean_name(name):
         return name
 
 def ac(text, color):
-    
+
     """ (a)dds (c)olor to text, using the standard color name or assigned identification number """
-    
+
     import csv
-    
+
     color_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'
     color_table_open = open(color_table_path, 'rb')
     color_palette = csv.DictReader(color_table_open)
-    
+
     for row in color_palette:
         if color == row['color_name'] or color == int(row['color_code']):
             label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(row['red_value'], row['green_value'], row['blue_value']) + text + "</CLR>"
@@ -27,7 +27,7 @@ def ac(text, color):
             label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"
 
     return label_colored
-    
+
 def ab(text):
 
     """ (a)dds (b)old to text """
@@ -43,6 +43,14 @@ def ai(text):
     label_italics = "<ITA>" + text + "</ITA>"
 
     return label_italics
+    
+def au(text):
+
+    """ (a)dds (u)nderline to text """
+
+    label_underline = "<UND>" + text + "</UND>"
+
+    return label_underline
 
 def add_fields_line(fc):
 
