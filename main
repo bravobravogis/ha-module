@@ -1,4 +1,4 @@
-def valid_fc_name(name):
+def clean_name(name):
     
     """ Returns a string with non-standard characters removed. """ 
     
@@ -15,7 +15,7 @@ def add_color(text, color):
     
     import csv
     
-    color_table_path = r'K:\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'
+    color_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'
     color_table_open = open(color_table_path, 'rb')
     color_palette = csv.DictReader(color_table_open)
     
@@ -27,3 +27,57 @@ def add_color(text, color):
             label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"
 
     return label_colored
+
+def ha_fc_line(fc):
+
+    """ Add standard fields to a polyline feature class. """
+
+    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_x_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_y_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_x_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_y_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
+    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+
+def ha_fc_point(fc):
+
+    """ Add standard fields to a point feature class. """
+
+    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_x", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "coord_y", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "latitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "longitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_value", "DOUBLE", 12, 3, "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
+    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    
+def ha_fc_poly(fc):
+
+    """ Add standard fields to a polygon feature class. """
+
+    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
+    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
