@@ -16,7 +16,7 @@ There are currently eight (8) functions, grouped as follows:
 2. Feature Class Modification  
   +**add_fields_point**: add fields to point feature class  
   +**add_fields_line**: add fields to line feature class  
-  +**add_fields_polygon**: add fields to polygon feature class  
+  +**add_fields_poly**: add fields to polygon feature class  
 
 ## Motivation
 The ability to import a module, with a collection of custom functions, makes routine mapping activities more efficient. As with toolboxes, modules can be easily shared amongst members of an organization. Maps constructed using shared modules are consistent, and reliance upon Python will encourage further growth and learning.
