@@ -7,7 +7,7 @@ def clean_name(name):
     name = name.strip()
     name = name.lower()
     
-    swap = name.maketrans("-+&. ", "_____")
+    swap = string.maketrans("-+&. ", "_____")
     punc = string.punctuation
     punc = punc.replace("-", "")
     punc = punc.replace("+", "")
