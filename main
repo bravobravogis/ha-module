@@ -2,12 +2,20 @@ def clean_name(name):
     
     """ Returns a string with non-standard characters removed. """ 
     
-    if ' ' in name or '-' in name:
-        name = name.replace('-','_')
-        name = name.replace(' ','_')
-        return name
-    else:
-        return name
+    import string
+    
+    name = name.strip()
+    name = name.lower()
+    
+    swap = name.maketrans("-+&. ", "_____")
+    punc = string.punctuation
+    punc = punc.replace("-", "")
+    punc = punc.replace("+", "")
+    punc = punc.replace("&", "")
+    punc = punc.replace(".", "")
+    name = string.translate(name, swap, punc)
+    
+    return name
 
 def ac(text, color):
 
