@@ -15,7 +15,15 @@ def clean_name(name):
     punc = punc.replace(".", "")
     name = string.translate(name, swap, punc)
     
-    return name
+    mod_name = str(name[0])
+    for i, elem in enumerate(name):
+        if i > 0:
+            if elem == name[i-1] and elem == '_':
+                continue
+            else:
+                mod_name += elem
+
+    return mod_name
 
 def ac(text, color):
 
