@@ -121,3 +121,24 @@ def add_fields_poly(fc):
     arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
     arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
     arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+
+def update_id(sample, amount=1, delimiter='-'):
+
+    """ Updates a numbered sample ID by a specified amount. """
+
+    prefix = sample[:sample.rfind(delimiter)]
+    final_element = len(sample.split(delimiter)) - 1
+    try:
+        suffix = int(sample.split(delimiter)[final_element]) + amount
+        if suffix < 10:
+            combine = [prefix, '0' + str(suffix)]
+        else:
+            combine = [prefix, str(suffix)]
+        return delimiter.join(combine)
+    except ValueError:
+        import string
+        for element in sample[::-1]:
+            if element not in string.digits:
+                recommended_split = element
+                break
+        print "Location ({0}) cannot be split with the '{1}' character.\r\nPlease attempt using '{2}' as the delimiter.".format(sample, delimiter, recommended_split)
