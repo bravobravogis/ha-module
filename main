@@ -122,26 +122,35 @@ def add_fields_poly(fc):
     arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
     arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
 
-def update_id(sample, amount=1, delimiter='-'):
+def update_id(fc, id_field='loc_id', amount=1, delimiter='-'):
 
     """ Updates a numbered sample ID by a specified amount. """
+    
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    
+    if 'loc_id_rev' not in fc_fields:
+        arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
 
-    prefix = sample[:sample.rfind(delimiter)]
-    final_element = len(sample.split(delimiter)) - 1
-    try:
-        suffix = int(sample.split(delimiter)[final_element]) + amount
-        if suffix < 10:
-            combine = [prefix, '0' + str(suffix)]
-        else:
-            combine = [prefix, str(suffix)]
-        return delimiter.join(combine)
-    except ValueError:
-        import string
-        for element in sample[::-1]:
-            if element not in string.digits:
-                recommended_split = element
-                break
-        print "Location ({0}) cannot be split with the '{1}' character.\r\nPlease attempt using '{2}' as the delimiter.".format(sample, delimiter, recommended_split)
+    with arcpy.da.UpdateCursor(fc, [id_field, 'loc_id_rev']) as update_cursor:
+        for row in update_cursor:
+            sample = str(row[0])
+            prefix = sample[:sample.rfind(delimiter)]
+            final_element = len(sample.split(delimiter)) - 1
+            try:
+                suffix = int(sample.split(delimiter)[final_element]) + amount
+                if suffix < 10:
+                    combined = [prefix, '0' + str(suffix)]
+                else:
+                    combined = [prefix, str(suffix)]
+                row[1] = delimiter.join(combined)
+            except ValueError:
+                import string
+                for element in sample[::-1]:
+                    if element not in string.digits:
+                        recommended_split = element
+                        break
+                print "Location ({0}) cannot be split with the '{1}' character. Please attempt using '{2}' as the delimiter.".format(sample, delimiter, recommended_split)
+            update_cursor.updateRow(row)
 
 def update_id_nwse(fc, prefix='HA-'):
 
