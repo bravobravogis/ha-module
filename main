@@ -143,33 +143,166 @@ def update_id(sample, amount=1, delimiter='-'):
                 break
         print "Location ({0}) cannot be split with the '{1}' character.\r\nPlease attempt using '{2}' as the delimiter.".format(sample, delimiter, recommended_split)
 
-def update_id_nwse(fc, prefix):
+def update_id_nwse(fc, prefix='HA-'):
 
     """ Updates numbered sample IDs by location, descending from northwest position to southeast position. """
     
-    uc_fields = ['SHAPE@Y', 'SHAPE@X', 'loc_id_rev']
-    sql_clause = (None, 'ORDER BY SHAPE@Y ASC, SHAPE@X DESC')
+    cursor_fields = ['loc_id_rev', 'longitude', 'latitude']
+    coord_fields = ['SHAPE@Y', 'SHAPE@X', 'latitude', 'longitude']
+    gcs = arcpy.Describe(fc).spatialReference.GCS
+    order_clause = (None, 'ORDER BY {0} ASC, {1} DESC'.format(arcpy.AddFieldDelimiters(fc, 'longitude'), arcpy.AddFieldDelimiters(fc, 'latitude')))
+
     if prefix.endswith('-'):
         prefix = prefix.upper()
     else:
         prefix = prefix.upper() + '-'
+
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
-    counter = 1    
-    arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
-    with arcpy.da.UpdateCursor(fc, uc_fields, '', '', '', sql_clause) as uc:
-        for row in uc:
+    if 'loc_id_rev' not in fc_fields:
+        arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
+    
+    if 'longitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'longitude', 'DOUBLE', 12, 8)
+    
+    if 'latitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'latitude', 'DOUBLE', 12, 8)
+    
+    with arcpy.da.UpdateCursor(fc, coord_fields, spatial_reference=gcs) as coord_updates:
+        for row in coord_updates:
+            row[2] = row[0]
+            row[3] = row[1]
+            coord_updates.updateRow(row)
+    
+    counter = 1
+    with arcpy.da.UpdateCursor(fc, cursor_fields, sql_clause=order_clause) as order_updates:
+        for row in order_updates:
             if counter < 10:
-                row[2] = prefix + '0' + counter
+                row[0] = prefix + '0' + str(counter)
             else:
-                uc.updateRow(row)
+                row[0] = prefix + str(counter)
+            order_updates.updateRow(row)
             counter += 1
             
-        
+def update_id_nesw(fc, prefix='HA-'):
+
+    """ Updates numbered sample IDs by location, descending from northeast position to southwest position. """
     
+    cursor_fields = ['loc_id_rev', 'longitude', 'latitude']
+    coord_fields = ['SHAPE@Y', 'SHAPE@X', 'latitude', 'longitude']
+    gcs = arcpy.Describe(fc).spatialReference.GCS
+    order_clause = (None, 'ORDER BY {0} DESC, {1} DESC'.format(arcpy.AddFieldDelimiters(fc, 'longitude'), arcpy.AddFieldDelimiters(fc, 'latitude')))
+
+    if prefix.endswith('-'):
+        prefix = prefix.upper()
+    else:
+        prefix = prefix.upper() + '-'
+
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
+    if 'loc_id_rev' not in fc_fields:
+        arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
     
+    if 'longitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'longitude', 'DOUBLE', 12, 8)
     
+    if 'latitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'latitude', 'DOUBLE', 12, 8)
     
+    with arcpy.da.UpdateCursor(fc, coord_fields, spatial_reference=gcs) as coord_updates:
+        for row in coord_updates:
+            row[2] = row[0]
+            row[3] = row[1]
+            coord_updates.updateRow(row)
     
+    counter = 1
+    with arcpy.da.UpdateCursor(fc, cursor_fields, sql_clause=order_clause) as order_updates:
+        for row in order_updates:
+            if counter < 10:
+                row[0] = prefix + '0' + str(counter)
+            else:
+                row[0] = prefix + str(counter)
+            order_updates.updateRow(row)
+            counter += 1
+            
+def update_id_swne(fc, prefix='HA-'):
+
+    """ Updates numbered sample IDs by location, descending from southwest position to northeast position. """
     
+    cursor_fields = ['loc_id_rev', 'longitude', 'latitude']
+    coord_fields = ['SHAPE@Y', 'SHAPE@X', 'latitude', 'longitude']
+    gcs = arcpy.Describe(fc).spatialReference.GCS
+    order_clause = (None, 'ORDER BY {0} ASC, {1} ASC'.format(arcpy.AddFieldDelimiters(fc, 'longitude'), arcpy.AddFieldDelimiters(fc, 'latitude')))
+
+    if prefix.endswith('-'):
+        prefix = prefix.upper()
+    else:
+        prefix = prefix.upper() + '-'
+
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
+    if 'loc_id_rev' not in fc_fields:
+        arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
+    
+    if 'longitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'longitude', 'DOUBLE', 12, 8)
+    
+    if 'latitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'latitude', 'DOUBLE', 12, 8)
+    
+    with arcpy.da.UpdateCursor(fc, coord_fields, spatial_reference=gcs) as coord_updates:
+        for row in coord_updates:
+            row[2] = row[0]
+            row[3] = row[1]
+            coord_updates.updateRow(row)
+    
+    counter = 1
+    with arcpy.da.UpdateCursor(fc, cursor_fields, sql_clause=order_clause) as order_updates:
+        for row in order_updates:
+            if counter < 10:
+                row[0] = prefix + '0' + str(counter)
+            else:
+                row[0] = prefix + str(counter)
+            order_updates.updateRow(row)
+            counter += 1
+            
+def update_id_senw(fc, prefix='HA-'):
+
+    """ Updates numbered sample IDs by location, descending from southeast position to northwest position. """
+    
+    cursor_fields = ['loc_id_rev', 'longitude', 'latitude']
+    coord_fields = ['SHAPE@Y', 'SHAPE@X', 'latitude', 'longitude']
+    gcs = arcpy.Describe(fc).spatialReference.GCS
+    order_clause = (None, 'ORDER BY {0} DESC, {1} ASC'.format(arcpy.AddFieldDelimiters(fc, 'longitude'), arcpy.AddFieldDelimiters(fc, 'latitude')))
+
+    if prefix.endswith('-'):
+        prefix = prefix.upper()
+    else:
+        prefix = prefix.upper() + '-'
+
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    
+    if 'loc_id_rev' not in fc_fields:
+        arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
+    
+    if 'longitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'longitude', 'DOUBLE', 12, 8)
+    
+    if 'latitude' not in fc_fields:
+        arcpy.AddField_management(fc, 'latitude', 'DOUBLE', 12, 8)
+    
+    with arcpy.da.UpdateCursor(fc, coord_fields, spatial_reference=gcs) as coord_updates:
+        for row in coord_updates:
+            row[2] = row[0]
+            row[3] = row[1]
+            coord_updates.updateRow(row)
+    
+    counter = 1
+    with arcpy.da.UpdateCursor(fc, cursor_fields, sql_clause=order_clause) as order_updates:
+        for row in order_updates:
+            if counter < 10:
+                row[0] = prefix + '0' + str(counter)
+            else:
+                row[0] = prefix + str(counter)
+            order_updates.updateRow(row)
+            counter += 1
