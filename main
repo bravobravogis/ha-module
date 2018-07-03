@@ -142,3 +142,34 @@ def update_id(sample, amount=1, delimiter='-'):
                 recommended_split = element
                 break
         print "Location ({0}) cannot be split with the '{1}' character.\r\nPlease attempt using '{2}' as the delimiter.".format(sample, delimiter, recommended_split)
+
+def update_id_nwse(fc, prefix):
+
+    """ Updates numbered sample IDs by location, descending from northwest position to southeast position. """
+    
+    uc_fields = ['SHAPE@Y', 'SHAPE@X', 'loc_id_rev']
+    sql_clause = (None, 'ORDER BY SHAPE@Y ASC, SHAPE@X DESC')
+    if prefix.endswith('-'):
+        prefix = prefix.upper()
+    else:
+        prefix = prefix.upper() + '-'
+    
+    counter = 1    
+    arcpy.AddField_management(fc, 'loc_id_rev', 'TEXT', '', '', 30)
+    with arcpy.da.UpdateCursor(fc, uc_fields, '', '', '', sql_clause) as uc:
+        for row in uc:
+            if counter < 10:
+                row[2] = prefix + '0' + counter
+            else:
+                uc.updateRow(row)
+            counter += 1
+            
+        
+    
+    
+    
+    
+    
+    
+    
+    
