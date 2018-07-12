@@ -4,26 +4,28 @@ def clean_name(name):
     
     import string
     
-    name = name.strip()
-    name = name.lower()
+    name = str(name) # converts standard ASCII input from Unicode format
+    name = name.strip() # removes leading and trailing spaces
+    name = name.lower() # converts to lowercase
     
-    swap = string.maketrans("-+&. ", "_____")
-    punc = string.punctuation
-    punc = punc.replace("-", "")
+    swap = string.maketrans("-+&. ", "_____") # translation table (from, to)
+    punc = string.punctuation # assigns punctuation character set to variable
+    punc = punc.replace("-", "") # removes punctuation that will be replaced
     punc = punc.replace("+", "")
     punc = punc.replace("&", "")
     punc = punc.replace(".", "")
-    name = string.translate(name, swap, punc)
+    punc = punc.replace("_", "")
+    name = string.translate(name, swap, punc) # replaces characters based on translation table then deletes punctuation
     
-    mod_name = str(name[0])
-    for i, elem in enumerate(name):
+    mod_name = str(name[0]) # assigns first character of input to empty string
+    for i, elem in enumerate(name): # iterates through each element of input string
         if i > 0:
-            if elem == name[i-1] and elem == '_':
-                continue
+            if elem == name[i-1] and elem == '_': # checks previous element for underscore characters
+                continue # skips repeating underscore characters
             else:
-                mod_name += elem
+                mod_name += elem # builds input string sequentially
 
-    return mod_name
+    return mod_name # outputs rebuilt (cleaned) user input
 
 def ac(text, color):
 
