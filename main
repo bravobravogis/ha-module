@@ -31,18 +31,23 @@ def ac(text, color):
 
     import csv
 
-    color_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'
-    color_table_open = open(color_table_path, 'rb')
-    color_palette = csv.DictReader(color_table_open)
+    if len(str(color)) > 2:  # check user input for color name or color id
+        color = color.title()  # converts to titlecase
+    else:
+        color = int(color)  # converts to integer
+        
+    color_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\color_style_reference_2017_0103.csv'  # point to updated color style reference CSV file
+    color_table_open = open(color_table_path, 'rb')  # open CSV file to read
+    color_palette = csv.DictReader(color_table_open)  # create a dictionary object from CSV file
 
-    for row in color_palette:
-        if color == row['color_name'] or color == int(row['color_code']):
-            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(row['red_value'], row['green_value'], row['blue_value']) + text + "</CLR>"
-            break
+    for row in color_palette:  # iterate through rows in CSV file
+        if color == row['color_name'] or color == int(row['color_code']):  # check user input against color name or color ID
+            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(row['red_value'], row['green_value'], row['blue_value']) + text + "</CLR>"  # retrieve RGB color values
+            break  # stop iterating through rows in CSV file
         else:
-            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"
+            label_colored = "<CLR RED='{}' GREEN='{}' BLUE='{}'>".format(0, 0, 0) + text + "</CLR>"  # display black label if unmatched
 
-    return label_colored
+    return label_colored  # output colored label
 
 def ab(text):
 
