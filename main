@@ -4,7 +4,7 @@ def clean_name(name):
     
     import string
     
-    name = str(name) # converts standard ASCII input from Unicode format
+    name = name.encode('ascii', errors='ignore') # converts standard ASCII input from Unicode format
     name = name.strip() # removes leading and trailing spaces
     name = name.lower() # converts to lowercase
     
