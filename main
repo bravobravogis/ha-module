@@ -4,28 +4,28 @@ def clean_name(name):
     
     import string
     
-    name = name.encode('ascii', errors='ignore') # converts standard ASCII input from Unicode format
-    name = name.strip() # removes leading and trailing spaces
-    name = name.lower() # converts to lowercase
+    name = name.encode('ascii', errors='ignore')  # converts standard ASCII input from Unicode format
+    name = name.strip()  # removes leading and trailing spaces
+    name = name.lower()  # converts to lowercase
     
-    swap = string.maketrans("-+&. ", "_____") # translation table (from, to)
-    punc = string.punctuation # assigns punctuation character set to variable
-    punc = punc.replace("-", "") # removes punctuation that will be replaced
+    swap = string.maketrans("-+&. ", "_____")  # translation table (from, to)
+    punc = string.punctuation  # assigns punctuation character set to variable
+    punc = punc.replace("-", "")  # removes punctuation that will be replaced
     punc = punc.replace("+", "")
     punc = punc.replace("&", "")
     punc = punc.replace(".", "")
     punc = punc.replace("_", "")
-    name = string.translate(name, swap, punc) # replaces characters based on translation table then deletes punctuation
+    name = string.translate(name, swap, punc)  # replaces characters based on translation table then deletes punctuation
     
     mod_name = str(name[0]) # assigns first character of input to empty string
-    for i, elem in enumerate(name): # iterates through each element of input string
+    for i, elem in enumerate(name):  # iterates through each element of input string
         if i > 0:
-            if elem == name[i-1] and elem == '_': # checks previous element for underscore characters
-                continue # skips repeating underscore characters
+            if elem == name[i-1] and elem == '_':  # checks previous element for underscore characters
+                continue  # skips repeating underscore characters
             else:
-                mod_name += elem # builds input string sequentially
+                mod_name += elem  # builds input string sequentially
 
-    return mod_name # outputs rebuilt (cleaned) user input
+    return mod_name  # outputs rebuilt (cleaned) user input
 
 def ac(text, color):
 
@@ -57,7 +57,7 @@ def ab(text):
 
     label_bold = "<BOL>" + text + "</BOL>"
 
-    return label_bold
+    return label_bold  # output bold label
     
 def ai(text):
 
@@ -65,7 +65,7 @@ def ai(text):
 
     label_italics = "<ITA>" + text + "</ITA>"
 
-    return label_italics
+    return label_italics  # output italicized label
     
 def au(text):
 
@@ -73,61 +73,124 @@ def au(text):
 
     label_underline = "<UND>" + text + "</UND>"
 
-    return label_underline
+    return label_underline  # output underlined label
 
 def add_fields_line(fc):
 
-    """ Add standard fields to a polyline feature class. """
-
-    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_x_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_y_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_x_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_y_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
-    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    """ Add standard fields to a polyline feature class or shapefile. """
+    
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
+    
+    if geospatial_data_type == 'FeatureClass':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_x_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_y_start", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_x_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_y_end", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    elif geospatial_data_type == 'ShapeFile':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "x_start", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "y_start", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "x_end", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "y_end", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60)
+        arcpy.AddField_management(fc, "loc_sub", "TEXT", "", "", 60)
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100)
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10)
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240)
+        arcpy.AddField_management(fc, "updated", "DATE")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120)
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
 
 def add_fields_point(fc):
 
     """ Add standard fields to a point feature class. """
 
-    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_x", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "coord_y", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "latitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "longitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_value", "DOUBLE", 12, 3, "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
-    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
+
+    if geospatial_data_type == 'FeatureClass':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_x", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "coord_y", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "latitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "longitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_value", "DOUBLE", 12, 3, "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    elif geospatial_data_type == 'ShapeFile':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "coord_x", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "coord_y", "DOUBLE", 14, 4)
+        arcpy.AddField_management(fc, "latitude", "DOUBLE", 12, 8)
+        arcpy.AddField_management(fc, "longitude", "DOUBLE", 12, 8)
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60)
+        arcpy.AddField_management(fc, "loc_sub", "TEXT", "", "", 60)
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100)
+        arcpy.AddField_management(fc, "loc_value", "DOUBLE", 12, 3)
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40)
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10)
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240)
+        arcpy.AddField_management(fc, "updated", "DATE")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120)
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
     
 def add_fields_poly(fc):
 
     """ Add standard fields to a polygon feature class. """
 
-    arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED", "Binary_Decision")
-    arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
-    arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
+    
+    if geospatial_data_type == 'FeatureClass':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    elif geospatial_data_type == 'ShapeFile':
+        arcpy.AddField_management(fc, "loc_id", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_type", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_subtype", "TEXT", "", "", 60, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "loc_descr", "TEXT", "", "", 100, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "region", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "status", "TEXT", "", "", 40, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "visible", "TEXT", "", "", 10, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "source", "TEXT", "", "", 240, "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "last_updated", "DATE", "", "", "", "", "NULLABLE", "NON_REQUIRED")
+        arcpy.AddField_management(fc, "notes", "TEXT", "", "", 120, "", "NULLABLE", "NON_REQUIRED")
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
 
 def update_id(fc, id_field='loc_id', amount=1, delimiter='-'):
 
@@ -327,20 +390,24 @@ def xy_update(fc, field_x='coord_x', field_y='coord_y'):
 
     """ Quickly updates coordinates fields, for northings and eastings. """
     
-    fc_type = arcpy.Describe(fc).dataType
-    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
     pcs = arcpy.Describe(fc).spatialReference
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
-    if fc_type == 'FeatureClass':
+    if geospatial_data_type == 'FeatureClass':
         if field_x not in fc_fields:
             arcpy.AddField_management(fc, field_x, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
         if field_y not in fc_fields:
             arcpy.AddField_management(fc, field_y, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    else:
+    elif geospatial_data_type == 'ShapeFile':
         if field_x not in fc_fields:
             arcpy.AddField_management(fc, field_x, "DOUBLE", 14, 4)
         if field_y not in fc_fields:
             arcpy.AddField_management(fc, field_y, "DOUBLE", 14, 4)
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=pcs) as update_cursor:
         for row in update_cursor:
@@ -352,20 +419,24 @@ def dd_update(fc, field_y='latitude', field_x='longitude'):
 
     """ Quickly updates coordinates fields, for decimal degrees. """
     
-    fc_type = arcpy.Describe(fc).dataType
-    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
     gcs = arcpy.Describe(fc).spatialReference.GCS
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
-    if fc_type == 'FeatureClass':
+    if geospatial_data_type == 'FeatureClass':
         if field_y not in fc_fields:
             arcpy.AddField_management(fc, field_y, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
         if field_x not in fc_fields:
             arcpy.AddField_management(fc, field_x, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    else:
+    elif geospatial_data_type == 'ShapeFile':
         if field_y not in fc_fields:
             arcpy.AddField_management(fc, field_y, "DOUBLE", 12, 8)
         if field_x not in fc_fields:
             arcpy.AddField_management(fc, field_x, "DOUBLE", 12, 8)
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=gcs) as update_cursor:
         for row in update_cursor:
@@ -377,12 +448,13 @@ def coords(fc, easting='coord_x', northing='coord_y', latitude='latitude', longi
 
     """ Quickly updates all coordinate fields. """
     
-    fc_type = arcpy.Describe(fc).dataType
-    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    fc_path = arcpy.Describe(fc).catalogPath
+    geospatial_data_type = arcpy.Describe(fc_path).dataType
     gcs = arcpy.Describe(fc).spatialReference.GCS
     pcs = arcpy.Describe(fc).spatialReference
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
     
-    if fc_type == 'FeatureClass':
+    if geospatial_data_type == 'FeatureClass':
         if northing not in fc_fields:
             arcpy.AddField_management(fc, northing, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
         if easting not in fc_fields:
@@ -391,7 +463,7 @@ def coords(fc, easting='coord_x', northing='coord_y', latitude='latitude', longi
             arcpy.AddField_management(fc, latitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
         if longitude not in fc_fields:
             arcpy.AddField_management(fc, longitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    else:
+    elif geospatial_data_type == 'ShapeFile':
         if northing not in fc_fields:
             arcpy.AddField_management(fc, northing, "DOUBLE", 14, 4)
         if easting not in fc_fields:
@@ -400,6 +472,9 @@ def coords(fc, easting='coord_x', northing='coord_y', latitude='latitude', longi
             arcpy.AddField_management(fc, latitude, "DOUBLE", 12, 8)
         if longitude not in fc_fields:
             arcpy.AddField_management(fc, longitude, "DOUBLE", 12, 8)
+    else:
+        print "Incorrect geospatial data type - attempt with either Shapefile or Feature Class only."
+        return
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', easting, northing], spatial_reference=pcs) as update_cursor:
         for row in update_cursor:
