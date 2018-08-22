@@ -322,3 +322,50 @@ def update_id_senw(fc, prefix='HA-'):
                 row[0] = prefix + str(counter)
             order_updates.updateRow(row)
             counter += 1
+
+def xy_update(fc, field_x='coord_x', field_y='coord_y'):
+
+    """ Quickly updates coordinates fields. """
+    
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    pcs = arcpy.Describe(fc).spatialReference
+    
+    if field_x == 'coord_x' and 'coord_x' not in fc_fields:
+        arcpy.AddField_management(fc, "coord_x", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    if field_y == 'coord_y' and 'coord_y' not in fc_fields:
+        arcpy.AddField_management(fc, "coord_y", "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+
+    with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=pcs) as update_cursor:
+        for row in update_cursor:
+            try:
+                row[2] = row[0]
+                row[3] = row[1]
+            except:
+                print "Either the field name for your northings ({0}) or the field name for your eastings ({1}) is incorrect. Please revise the field names you've provided..".format(field_y, field_x)
+            update_cursor.updateRow(row)
+            
+def dd_update(fc, field_y='latitude', field_x='longitude'):
+
+    """ Quickly updates coordinates fields. """
+    
+    fc_fields = [f.name for f in arcpy.ListFields(fc)]
+    print fc_fields
+    gcs = arcpy.Describe(fc).spatialReference.GCS
+    print gcs
+    
+    if 'latitude' not in fc_fields:
+        print "nope, latitude"
+        arcpy.AddField_management(fc, "latitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    if 'longitude' not in fc_fields:
+        print "nope, longitude"
+        arcpy.AddField_management(fc, "longitude", "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+
+    with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=gcs) as update_cursor:
+        for row in update_cursor:
+            try:
+                row[2] = row[0]
+                row[3] = row[1]
+                update_cursor.updateRow(row)
+            except:
+                print "Either the field name for your latitude ({0}) or the field name for your longitude ({1}) is incorrect. Please revise the field names you've provided..".format(field_y, field_x)
+                break
