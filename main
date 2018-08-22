@@ -327,13 +327,20 @@ def xy_update(fc, field_x='coord_x', field_y='coord_y'):
 
     """ Quickly updates coordinates fields, for northings and eastings. """
     
+    fc_type = arcpy.Describe(fc).dataType
     fc_fields = [f.name for f in arcpy.ListFields(fc)]
     pcs = arcpy.Describe(fc).spatialReference
     
-    if field_x not in fc_fields:
-        arcpy.AddField_management(fc, field_x, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    if field_y not in fc_fields:
-        arcpy.AddField_management(fc, field_y, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    if fc_type == 'FeatureClass':
+        if field_x not in fc_fields:
+            arcpy.AddField_management(fc, field_x, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        if field_y not in fc_fields:
+            arcpy.AddField_management(fc, field_y, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+    else:
+        if field_x not in fc_fields:
+            arcpy.AddField_management(fc, field_x, "DOUBLE", 14, 4)
+        if field_y not in fc_fields:
+            arcpy.AddField_management(fc, field_y, "DOUBLE", 14, 4)
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=pcs) as update_cursor:
         for row in update_cursor:
@@ -345,13 +352,20 @@ def dd_update(fc, field_y='latitude', field_x='longitude'):
 
     """ Quickly updates coordinates fields, for decimal degrees. """
     
+    fc_type = arcpy.Describe(fc).dataType
     fc_fields = [f.name for f in arcpy.ListFields(fc)]
     gcs = arcpy.Describe(fc).spatialReference.GCS
     
-    if field_y not in fc_fields:
-        arcpy.AddField_management(fc, field_y, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    if field_x not in fc_fields:
-        arcpy.AddField_management(fc, field_x, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    if fc_type == 'FeatureClass':
+        if field_y not in fc_fields:
+            arcpy.AddField_management(fc, field_y, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+        if field_x not in fc_fields:
+            arcpy.AddField_management(fc, field_x, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    else:
+        if field_y not in fc_fields:
+            arcpy.AddField_management(fc, field_y, "DOUBLE", 12, 8)
+        if field_x not in fc_fields:
+            arcpy.AddField_management(fc, field_x, "DOUBLE", 12, 8)
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', field_x, field_y], spatial_reference=gcs) as update_cursor:
         for row in update_cursor:
@@ -363,18 +377,29 @@ def coords(fc, easting='coord_x', northing='coord_y', latitude='latitude', longi
 
     """ Quickly updates all coordinate fields. """
     
+    fc_type = arcpy.Describe(fc).dataType
     fc_fields = [f.name for f in arcpy.ListFields(fc)]
     gcs = arcpy.Describe(fc).spatialReference.GCS
     pcs = arcpy.Describe(fc).spatialReference
     
-    if northing not in fc_fields:
-        arcpy.AddField_management(fc, northing, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    if easting not in fc_fields:
-        arcpy.AddField_management(fc, easting, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
-    if latitude not in fc_fields:
-        arcpy.AddField_management(fc, latitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
-    if longitude not in fc_fields:
-        arcpy.AddField_management(fc, longitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    if fc_type == 'FeatureClass':
+        if northing not in fc_fields:
+            arcpy.AddField_management(fc, northing, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        if easting not in fc_fields:
+            arcpy.AddField_management(fc, easting, "DOUBLE", 14, 4, "", "", "NULLABLE", "NON_REQUIRED")
+        if latitude not in fc_fields:
+            arcpy.AddField_management(fc, latitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+        if longitude not in fc_fields:
+            arcpy.AddField_management(fc, longitude, "DOUBLE", 12, 8, "", "", "NULLABLE", "NON_REQUIRED")
+    else:
+        if northing not in fc_fields:
+            arcpy.AddField_management(fc, northing, "DOUBLE", 14, 4)
+        if easting not in fc_fields:
+            arcpy.AddField_management(fc, easting, "DOUBLE", 14, 4)
+        if latitude not in fc_fields:
+            arcpy.AddField_management(fc, latitude, "DOUBLE", 12, 8)
+        if longitude not in fc_fields:
+            arcpy.AddField_management(fc, longitude, "DOUBLE", 12, 8)
 
     with arcpy.da.UpdateCursor(fc, ['SHAPE@X', 'SHAPE@Y', easting, northing], spatial_reference=pcs) as update_cursor:
         for row in update_cursor:
