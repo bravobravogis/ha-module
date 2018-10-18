@@ -63,7 +63,7 @@ def exceed_mcl_ca(result, analyte):
     mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
 
     for row in mcls:  # iterate through rows in CSV file
-        if analyte == row['analyte']:  # check user input against color name or color ID
+        if analyte == row['analyte']:  # check user input against analyte name
             value_exceed = float(row['mcl_ca'])  # pull MCL from California MCLs (or EPA MCLs, as row['mcl_epa'])
             break  # stop iterating through rows in CSV file
         else:
@@ -88,8 +88,108 @@ def exceed_mcl_epa(result, analyte):
     mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
 
     for row in mcls:  # iterate through rows in CSV file
-        if analyte == row['analyte']:  # check user input against color name or color ID
+        if analyte == row['analyte']:  # check user input against analyte name
             value_exceed = float(row['mcl_epa'])  # pull MCL from EPA MCLs (or California MCLs, as row['mcl_ca'])
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+    
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+
+def exceed_esl_gw(result, analyte):
+    
+    import csv
+    
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+    
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_gw'])  # pull ESL for Groundwater
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+    
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_soil(result, analyte):
+    
+    import csv
+    
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+    
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_soil'])  # pull ESL for Soil
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+    
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_ss(result, analyte):
+    
+    import csv
+    
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+    
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_subslab'])  # pull ESL for Sub-Slab / Soil Gas 
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+    
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_ia(result, analyte):
+    
+    import csv
+    
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+    
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_indoor_air'])  # pull ESL for Indoor Air
             break  # stop iterating through rows in CSV file
         else:
             continue
