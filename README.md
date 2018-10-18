@@ -1,4 +1,4 @@
-# ha-module
+# module
 Module for import during mapping
 
 ## Synopsis
@@ -28,4 +28,4 @@ Download the custom module and extract the .py file to the following folder:\
 _C:\Users\<user name>\AppData\Roaming\ESRI\Desktop<version number>\ArcToolbox\My Toolboxes_
 
 ## Contributors
-Ian Bruce (Haley & Aldrich, Inc.) is the sole contributor (as of *14 June 2018*).
+Ian Bruce is the sole contributor (as of *October 18 2018*).
