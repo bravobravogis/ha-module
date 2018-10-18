@@ -51,156 +51,6 @@ def ac(text, color):
 
     return label_colored  # output colored label
     
-def exceed_mcl_ca(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.title()  # converts analyte to titlecase
-    result = float(result)
-    
-    mcl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\mcl_reference_2018_10.csv'  # point to updated MCL reference file
-    mcl_table_open = open(mcl_table_path, 'rb')  # open CSV file to read
-    mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
-
-    for row in mcls:  # iterate through rows in CSV file
-        if analyte == row['analyte']:  # check user input against analyte name
-            value_exceed = float(row['mcl_ca'])  # pull MCL from California MCLs (or EPA MCLs, as row['mcl_epa'])
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-    
-def exceed_mcl_epa(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.title()  # converts analyte to titlecase
-    result = float(result)
-    
-    mcl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\mcl_reference_2018_10.csv'  # point to updated MCL reference file
-    mcl_table_open = open(mcl_table_path, 'rb')  # open CSV file to read
-    mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
-
-    for row in mcls:  # iterate through rows in CSV file
-        if analyte == row['analyte']:  # check user input against analyte name
-            value_exceed = float(row['mcl_epa'])  # pull MCL from EPA MCLs (or California MCLs, as row['mcl_ca'])
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-
-def exceed_esl_gw(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.upper()  # converts analyte to uppercase
-    result = float(result)
-    
-    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
-    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
-    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
-
-    for row in esls:  # iterate through rows in CSV file
-        if analyte == row['analyte'].upper():  # check user input against analyte name
-            value_exceed = float(row['esl_gw'])  # pull ESL for Groundwater
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-    
-def exceed_esl_soil(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.upper()  # converts analyte to uppercase
-    result = float(result)
-    
-    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
-    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
-    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
-
-    for row in esls:  # iterate through rows in CSV file
-        if analyte == row['analyte'].upper():  # check user input against analyte name
-            value_exceed = float(row['esl_soil'])  # pull ESL for Soil
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-    
-def exceed_esl_ss(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.upper()  # converts analyte to uppercase
-    result = float(result)
-    
-    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
-    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
-    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
-
-    for row in esls:  # iterate through rows in CSV file
-        if analyte == row['analyte'].upper():  # check user input against analyte name
-            value_exceed = float(row['esl_subslab'])  # pull ESL for Sub-Slab / Soil Gas 
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-    
-def exceed_esl_ia(result, analyte):
-    
-    import csv
-    
-    analyte = analyte.upper()  # converts analyte to uppercase
-    result = float(result)
-    
-    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
-    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
-    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
-
-    for row in esls:  # iterate through rows in CSV file
-        if analyte == row['analyte'].upper():  # check user input against analyte name
-            value_exceed = float(row['esl_indoor_air'])  # pull ESL for Indoor Air
-            break  # stop iterating through rows in CSV file
-        else:
-            continue
-    
-    if result > value_exceed:
-        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
-    else:
-        label_exceed = "{0}".format(result)  # display standard label if unmatched
-
-    return label_exceed  # output exceedance label
-
 def ab(text):
 
     """ (a)dds (b)old to text """
@@ -224,6 +74,210 @@ def au(text):
     label_underline = "<UND>" + text + "</UND>"
 
     return label_underline
+
+def exceed_mcl_ca(result, analyte):
+
+    """ bolds values exceeding California maximum contaminant levels (CA MCLs) for drinking water, October 2018 """
+
+    import csv
+
+    analyte = analyte.title()  # converts analyte to titlecase
+    result = float(result)
+
+    mcl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\mcl_reference_2018_10.csv'  # point to updated MCL reference file
+    mcl_table_open = open(mcl_table_path, 'rb')  # open CSV file to read
+    mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
+
+    for row in mcls:  # iterate through rows in CSV file
+        if analyte == row['analyte']:  # check user input against analyte name
+            value_exceed = float(row['mcl_ca'])  # pull MCL from California MCLs (or EPA MCLs, as row['mcl_epa'])
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_mcl_epa(result, analyte):
+
+    """ bolds values exceeding federal maximum contaminant levels (EPA MCLs) for drinking water, October 2018 """
+
+    import csv
+
+    analyte = analyte.title()  # converts analyte to titlecase
+    result = float(result)
+
+    mcl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\mcl_reference_2018_10.csv'  # point to updated MCL reference file
+    mcl_table_open = open(mcl_table_path, 'rb')  # open CSV file to read
+    mcls = csv.DictReader(mcl_table_open)  # create a dictionary object from CSV file
+
+    for row in mcls:  # iterate through rows in CSV file
+        if analyte == row['analyte']:  # check user input against analyte name
+            value_exceed = float(row['mcl_epa'])  # pull MCL from EPA MCLs (or California MCLs, as row['mcl_ca'])
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+
+def exceed_esl_gw(result, analyte):
+
+    """ bolds values exceeding California San Francisco Regional Water Quality Control Board Tier 1 ESLs (Tier 1 ESLs) for groundwater, February 2016 Rev 3 """
+
+    import csv
+
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_gw'])  # pull ESL for Groundwater
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_soil(result, analyte):
+
+    """ bolds values exceeding California San Francisco Regional Water Quality Control Board Tier 1 ESLs (Tier 1 ESLs) for soil, February 2016 Rev 3 """
+
+    import csv
+
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_soil'])  # pull ESL for Soil
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_ss(result, analyte):
+
+    """ bolds values exceeding California San Francisco Regional Water Quality Control Board Tier 1 ESLs (Tier 1 ESLs) for subslab and soil gas, February 2016 Rev 3 """
+
+    import csv
+
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_subslab'])  # pull ESL for Sub-Slab / Soil Gas 
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+    
+def exceed_esl_ia(result, analyte):
+
+    """ bolds values exceeding California San Francisco Regional Water Quality Control Board Tier 1 ESLs (Tier 1 ESLs) for indoor air, February 2016 Rev 3 """
+
+    import csv
+
+    analyte = analyte.upper()  # converts analyte to uppercase
+    result = float(result)
+
+    esl_table_path = r'\\haleyaldrich.com\share\oak_public\Ian\GIS_Resources\Expressions and Scripts\Arcpy\esl_reference_2018_10.csv'  # point to updated MCL reference file
+    esl_table_open = open(esl_table_path, 'rb')  # open CSV file to read
+    esls = csv.DictReader(esl_table_open)  # create a dictionary object from CSV file
+
+    for row in esls:  # iterate through rows in CSV file
+        if analyte == row['analyte'].upper():  # check user input against analyte name
+            value_exceed = float(row['esl_indoor_air'])  # pull ESL for Indoor Air
+            break  # stop iterating through rows in CSV file
+        else:
+            continue
+
+    if result > value_exceed:
+        label_exceed = "<BOL>{0}</BOL>".format(result)  # apply BOLD to values exceeding threshold value
+    else:
+        label_exceed = "{0}".format(result)  # display standard label if unmatched
+
+    return label_exceed  # output exceedance label
+
+def attach_coords(fc, spatial_ref=None):
+    
+    """ adds fields for coordinates, including northings/eastings (feet) and latitude/longitude (decimal degrees) """
+    
+    coordinate_fields = ("x_coord", "coord_x", "easting", "eastings", "longitude", "x", "y_coord", "coord_y", "northing", "northings", "latitude", "y")  # alternate coordinate field names for comparison
+    fc_desc = arcpy.Describe(fc)  
+    fc_fields = arcpy.ListFields(fc)
+    
+    if spatial_ref:  # assigns spatial reference from function argument
+        sr = arcpy.SpatialReference(spatial_ref)
+        sr_gcs = sr.GCS
+    else:  # assigns spatial reference from feature class
+        sr = fc_desc.spatialReference
+        sr_gcs = sr.GCS
+    
+    for field_name in fc_fields:  # checks feature class fields for existing coordinate fields
+        if field_name.name in coordinate_fields:
+            coord_field_exists = True
+            break
+        else:
+            coord_field_exists = False
+
+    if coord_field_exists == False:  # creates coordinate fields within feature class
+        arcpy.AddField_management(fc, "x_coord", "DOUBLE")
+        arcpy.AddField_management(fc, "y_coord", "DOUBLE")
+        arcpy.AddField_management(fc, "latitude", "DOUBLE")
+        arcpy.AddField_management(fc, "longitude", "DOUBLE")
+        
+        if fc_desc.shapeType == "Point" or fc_desc.shapeType == "Polygon":  # checks for either point or polygon feature class
+            with arcpy.da.UpdateCursor(fc, ["SHAPE@X", "SHAPE@Y", "x_coord", "y_coord"], "", sr) as update_cursor_ft:  # uses projected coordinate spatial reference
+                for row in update_cursor_ft:  # populates fields with northings/eastings
+                    row[2] = row[0]  # updates x coordinate
+                    row[3] = row[1]  # updates y coordinate
+                    update_cursor_ft.updateRow(row)
+            with arcpy.da.UpdateCursor(fc, ["SHAPE@X", "SHAPE@Y", "latitude", "longitude"], "", sr_gcs) as update_cursor_dd:  # uses geographic coordinate spatial reference
+                for row in update_cursor_dd:  # populates fields with latitude/longitude
+                    row[3] = row[0]  # updates x coordinate
+                    row[2] = row[1]  # updates y coordinate
+                    update_cursor_dd.updateRow(row)
+    else:
+        print "Coordinate fields exist already - please remove and try again."
 
 def add_fields_line(fc):
 
